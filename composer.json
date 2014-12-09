@@ -1,5 +1,5 @@
 {
-  "name": "davidbarratt/custom-installer",
+  "name": "greg-1-anderson/custom-installer",
   "description": "Install custom types into custom locations.",
   "type": "composer-plugin",
   "license": "Apache-2.0",
