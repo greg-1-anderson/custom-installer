@@ -116,7 +116,7 @@ class CustomInstaller extends LibraryInstaller
    */
   protected function installCode(PackageInterface $package)
   {
-      $exclusions = getExclusions($package->getType());
+      $exclusions = $this->getExclusions($package->getType());
       if (empty($exclusions)) {
           parent::installCode($package);
       }
@@ -126,7 +126,7 @@ class CustomInstaller extends LibraryInstaller
   }
   protected function updateCode(PackageInterface $initial, PackageInterface $target)
   {
-      $exclusions = getExclusions($package->getType());
+      $exclusions = $this->getExclusions($package->getType());
       if (empty($exclusions)) {
           parent::updateCode($initial, $target);
       }
@@ -136,7 +136,7 @@ class CustomInstaller extends LibraryInstaller
   }
   protected function removeCode(PackageInterface $package)
   {
-      $exclusions = getExclusions($package->getType());
+      $exclusions = $this->getExclusions($package->getType());
       if (empty($exclusions)) {
           parent::updateCode($package);
       }
