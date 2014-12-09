@@ -210,7 +210,7 @@ class CustomInstaller extends LibraryInstaller
       // We will remove this when we are done.  '$downloadPath'
       // should already be unique at this point in time in the system,
       // so we do not have to work too hard to get a decent tmpname.
-      $tmpPath = $downloadPath . '-' . (time() % 100000);
+      $tmpPath = rtrim($downloadPath, '/') . '-' . (time() % 100000) . '/';
       // Download to the temporary location using the existing download manager.
       $this->downloadManager->download($package, $tmpPath);
       // Delete everything in the target, except for the 'exclusions';
