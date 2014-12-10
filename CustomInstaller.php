@@ -228,20 +228,21 @@ class CustomInstaller extends LibraryInstaller
   }
   protected function removeCodePreservingExclusions(PackageInterface $package, $exclusions)
   {
-      $downloadPath = $this->getPackageBasePath($package);
+      $downloadPath = $this->getInstallPath($package);
       $this->io->write("  - Removing <info>" . $package->getName() . "</info> (<comment>" . $package->getPrettyVersion() . "</comment>)");
-      // If the downloadManager implements ChangeReportInterface,
+      // If the downloader implements ChangeReportInterface,
       // then it provides a 'getLocalChanges' method that will report
       // on any files in the package that may have been changed by
       // the user.
-      if ($this->downloadManager instanceof ChangeReportInterface)
+      $downloader = $this->downloadManager->getDownloaderForInstalledPackage($package);
+      if ($downloader instanceof ChangeReportInterface)
       {
-          $localChanges = $this->downloadManager->getLocalChanges($package, $downloadPath);
+          $localChanges = $downloader->getLocalChanges($package, $downloadPath);
           $this->io->write($localChanges);
       }
       else
       {
-          $this->io->write("    ChangeReportInterface not implemented by " . get_class($this->downloadManager));
+          $this->io->write("    ChangeReportInterface not implemented by " . get_class($downloader));
       }
       // Remove everything from $downloadPath except $exclusions
       $this->removePreservingExclusions($downloadPath, $exclusions);
