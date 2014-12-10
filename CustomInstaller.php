@@ -138,7 +138,7 @@ class CustomInstaller extends LibraryInstaller
   {
       $exclusions = $this->getExclusions($package->getType());
       if (empty($exclusions)) {
-          parent::updateCode($package);
+          parent::removeCode($package);
       }
       else {
           $this->removeCodePreservingExclusions($package, $exclusions);
@@ -230,10 +230,19 @@ class CustomInstaller extends LibraryInstaller
   {
       $downloadPath = $this->getPackageBasePath($package);
       $this->io->write("  - Removing <info>" . $package->getName() . "</info> (<comment>" . $package->getPrettyVersion() . "</comment>)");
-      // TODO: cleanChanges() is most likely going to be confused
-      // by the excluded directories, and will probably flag them
-      // as being changed.  We'll need our own version of this routine.
-      $this->cleanChanges($package, $downloadPath, false);
+      // If the downloadManager implements ChangeReportInterface,
+      // then it provides a 'getLocalChanges' method that will report
+      // on any files in the package that may have been changed by
+      // the user.
+      if ($this->downloadManager instanceof ChangeReportInterface)
+      {
+          $localChanges = $this->downloadManager->getLocalChanges($package, $downloadPath);
+          $this->io->write($localChanges);
+      }
+      else
+      {
+          $this->io->write("    ChangeReportInterface not implemented by " . get_class($this->downloadManager));
+      }
       // Remove everything from $downloadPath except $exclusions
       $this->removePreservingExclusions($downloadPath, $exclusions);
   }
