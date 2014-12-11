@@ -154,6 +154,10 @@ class CustomInstaller extends LibraryInstaller
       {
           $fs_item = $fileInfo->getFilename();
           $search_for = $prefix . $fs_item;
+          if ($fileInfo->isDir())
+          {
+              $search_for .= '/';
+          }
           if (!$this->array_item_begins_with($search_for, $exclusions))
           {
               if ($fileInfo->isFile() || !$fileInfo->isDot())
@@ -181,6 +185,10 @@ class CustomInstaller extends LibraryInstaller
       {
           $fs_item = $fileInfo->getFilename();
           $search_for = $prefix . $fs_item;
+          if ($fileInfo->isDir())
+          {
+              $search_for .= '/';
+          }
           if (!in_array($search_for, $exclusions))
           {
               if($fileInfo->isFile())
@@ -197,7 +205,7 @@ class CustomInstaller extends LibraryInstaller
   private function array_item_begins_with($needle, $haystack) {
       foreach ($haystack as $comparitor)
       {
-          if (($comparitor == $needle) || (substr($comparitor, 0, strlen($needle) + 1) == $needle . "/"))
+          if (substr($comparitor, 0, strlen($needle)) == $needle)
           {
               return true;
           }

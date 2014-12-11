@@ -81,8 +81,8 @@ class CustomInstallerTest extends PHPUnit_Framework_TestCase
                 ),
                 // exclusions
                 array(
-                    "core/vendor",
-                    "modules",
+                    "core/vendor/",
+                    "modules/",
                 ),
                 // expected result
                 array(
