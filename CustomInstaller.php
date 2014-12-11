@@ -238,12 +238,9 @@ class CustomInstaller extends LibraryInstaller
       $downloader = $this->downloadManager->getDownloaderForInstalledPackage($package);
       if ($downloader instanceof ChangeReportInterface)
       {
+          // We could potentially filter the localChanges line based on the
+          // exclusions, and report back if there was anything left over.
           $localChanges = $downloader->getLocalChanges($package, $downloadPath);
-          $this->io->write($localChanges);
-      }
-      else
-      {
-          $this->io->write("    ChangeReportInterface not implemented by " . get_class($downloader));
       }
       // Remove everything from $downloadPath except $exclusions
       $this->removePreservingExclusions($downloadPath, $exclusions);
